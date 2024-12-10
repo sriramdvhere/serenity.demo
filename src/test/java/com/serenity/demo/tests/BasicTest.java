@@ -20,7 +20,9 @@ public class BasicTest {
 
     NavigateActions navigate;
     SearchActions search;
-    WebElementActions webElementActions;
+    HomePageActions homePage;
+    WaitActions wait;
+    AddRemoveElementActions addRemoveElement;
 
 
     @Test
@@ -36,8 +38,20 @@ public class BasicTest {
     @Test
     void openHerokuApp() {
         navigate.openHerokuApp();
-        webElementActions.validate(webElementActions.getheading());
+        homePage.validate(homePage.getHeading());
     }
 
-
+    @Test
+    void AddRemoveElementTest() {
+        navigate.openHerokuApp();
+        wait.checkVisibilityOfElement(homePage.getAddElementLink());
+        homePage.clickElement("Add/Remove Element", homePage.getAddElementLink());
+        Serenity.reportThat("The heading of page is matching",
+                () -> assertThat(addRemoveElement.getHeading()).isEqualTo("Add/Remove Elements")
+        );
+        addRemoveElement.addElement();
+        Serenity.reportThat("The Button is added",
+                () -> assertThat(addRemoveElement.getSizeOfDeleteBtn()).isEqualTo(1)
+        );
+    }
 }
